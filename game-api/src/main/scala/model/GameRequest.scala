@@ -6,13 +6,11 @@ import io.circe.generic.semiauto.deriveCodec
 import io.circe.parser._
 import org.http4s.websocket.WebSocketFrame.Text
 
-sealed trait InputMessage
+case class GameRequest(message_type: String, players: Long)
 
-case class GameRequest(messageType: String, numberPlayers: Long) extends InputMessage
+case class Error(error: String)
 
-case class Error(error: String) extends InputMessage
-
-case class Disconnect(message: String) extends InputMessage
+case class Disconnect(message: String)
 
 
 
@@ -24,7 +22,7 @@ object GameRequest {
   def processInput(text: String): Either[DomainError, GameRequest] = {
     decode[GameRequest](text) match {
       case Right(gameRequest) => Right(gameRequest)
-      case Left(error) => Left(NotRecognizedMessageType("error"))
+      case Left(error) => Left(NotRecognizedMessageType("Message is not in the correct format"))
     }
   }
 

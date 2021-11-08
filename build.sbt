@@ -42,6 +42,10 @@ lazy val `domain` = project
       "com.github.mlangc" %% "slf4zio" % Versions.Slf4Zio,
       "com.github.mlangc" %% "zio-interop-log4j2" % Versions.ZioInteropLog,
       "org.scalatest" %% "scalatest" % Versions.ScalaTest,
+      "io.circe" %% "circe-core" % Versions.Circe,
+      "io.circe" %% "circe-generic" % Versions.Circe,
+      "io.circe" %% "circe-generic-extras" % Versions.Circe,
+      "io.circe" %% "circe-parser" % Versions.Circe,
     ),
 //    inConfig(IntegrationTests)(
 //      Defaults.testTasks ++
@@ -50,7 +54,7 @@ lazy val `domain` = project
   )
 
 lazy val `game-api` = project
-  //.dependsOn(`domain` % "compile->compile;test->test")
+  .dependsOn(`domain` % "compile->compile;test->test")
   .settings(
     name := "game-api",
     organization := "lucklygames.game.api",

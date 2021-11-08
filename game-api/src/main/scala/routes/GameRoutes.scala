@@ -1,27 +1,17 @@
 package routes
 
-import java.io
-
-import cats.effect.std.Queue
-import environment.GameRuntime
-import error.{DomainError, NotRecognizedMessageType}
 import repository.GameRepository
-import repository.GameRepository.GameRepository
-import zio.{IO, Task, ZIO}
-//import cats.effect.{Async, ContextShift, Sync}
-import fs2.concurrent.Topic
 import fs2.{Pipe, Stream}
-import model.{GameRequest, GameResults, InputMessage}
+import model.{GameRequest, GameResults}
 import org.http4s.HttpRoutes
-import org.http4s.dsl.Http4sDsl
-import org.http4s.implicits._
-import org.http4s.server.websocket.{WebSocketBuilder2}
-import org.http4s.websocket.WebSocketFrame.{Close, Text}
+import org.http4s.server.websocket.WebSocketBuilder2
+import org.http4s.websocket.WebSocketFrame.Text
 import cats.effect._
 import cats.effect.std.Queue
 import cats.syntax.all._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.websocket.WebSocketFrame
+import io.circe.syntax._
 
 
 
@@ -37,7 +27,7 @@ def routes(gameRepository: GameRepository.Service): HttpRoutes[F] = {
         _.collect {
           case Text(msg, _) => {
             GameRequest.processInput(msg) match {
-              case Right(response) => Text(response.toString)
+              case Right(response) => processGame(response, gameRepository)
               case Left(error) => Text(error.message.toString)
             }
           }
@@ -54,12 +44,16 @@ def routes(gameRepository: GameRepository.Service): HttpRoutes[F] = {
   }
 }
 
-  def processInput(text: String, gameRepository: GameRepository.Service): ZIO[Any, io.Serializable, GameResults] = {
-    val result = for {
-      request <- ZIO.fromEither(GameRequest.processInput(text))
-      result <-  gameRepository.runGame(request)
-    } yield result
-     result
+//  def processInput(text: String, gameRepository: GameRepository.Service): ZIO[Any, io.Serializable, GameResults] = {
+//    val result = for {
+//      request <- ZIO.fromEither(GameRequest.processInput(text))
+//      result <-  gameRepository.runGame(request)
+//    } yield result
+//     result
+//  }
+
+  def processGame(gameRequest: GameRequest, gameRepository: GameRepository.Service): Text = {
+    Text(GameResults.apply(gameRepository.runGame(gameRequest)).asJson.noSpaces)
   }
 
 }
