@@ -63,7 +63,7 @@ lazy val `game-api` = project
       //ZIO logging
       "dev.zio" %% "zio" % Versions.Zio,
       "dev.zio" %% "zio-test" % Versions.Zio % Test,
-      "dev.zio"  %% "zio-interop-cats"  % "2.0.0.0-RC2",
+      "dev.zio"  %% "zio-interop-cats"  % "3.1.1.0",
       "com.github.mlangc" %% "slf4zio" % Versions.Slf4Zio,
       "com.github.mlangc" %% "zio-interop-log4j2" % Versions.ZioInteropLog,
       "org.scalatest" %% "scalatest" % Versions.ScalaTest,
@@ -72,16 +72,9 @@ lazy val `game-api` = project
       "io.circe" %% "circe-generic" % Versions.Circe,
       "io.circe" %% "circe-generic-extras" % Versions.Circe,
       "io.circe" %% "circe-parser" % Versions.Circe,
-      "de.heikoseeberger" %% "akka-http-json4s" % "1.38.2",
-      "org.json4s" %% "json4s-jackson" % "4.0.3",
-      "com.typesafe.akka" %% "akka-http-caching" % "10.2.6",
-
       "org.http4s" %% "http4s-dsl" % Versions.http4sVersion,
       "org.http4s" %% "http4s-blaze-server" % Versions.http4sVersion,
       "org.http4s" %% "http4s-blaze-client" % Versions.http4sVersion,
-//      "com.softwaremill.sttp.client3" %% "async-http-client-backend-monix" % "3.3.16",
-//      "com.softwaremill.sttp.client3" %% "async-http-client-backend-fs2" % "3.3.16"
-//       "com.softwaremill.sttp.client3" %% "akka-http-backend" % "3.3.16"
     ),
 //    inConfig(IntegrationTests)(
 //      Defaults.testTasks ++
