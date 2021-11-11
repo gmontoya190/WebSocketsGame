@@ -6,12 +6,12 @@ import zio.Has
 import zio.internal.Platform
 
 
-class LiveGameRuntime extends zio.Runtime[GameRuntime] {
-
-  private val gameRepository: GameRepository.Service = new GameService
-
-  override val environment: GameRuntime = Has(gameRepository)
-
-  override val platform: Platform =
-    Platform.makeDefault().withReportFailure(_ => ())
-}
+//class LiveGameRuntime extends zio.Runtime[GameRuntime] {
+//
+//  private val gameRepository: GameRepository.Service = new GameService
+//
+//  override val environment: GameRuntime = Has(gameRepository)
+//
+//  override val platform: Platform =
+//    Platform.makeDefault().withReportFailure(_ => ())
+//}

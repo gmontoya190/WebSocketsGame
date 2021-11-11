@@ -6,7 +6,7 @@ import io.circe.generic.semiauto.deriveCodec
 import io.circe.parser._
 import org.http4s.websocket.WebSocketFrame.Text
 
-case class GameRequest(message_type: String, players: Long)
+case class GameRequest(message_type: String, players: Int)
 
 case class Error(error: String)
 

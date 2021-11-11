@@ -15,15 +15,15 @@ import io.circe.syntax._
 
 
 
-class GameRoutes[F[_]] (wsb: WebSocketBuilder2[F])
-                       (implicit F: Async[F])
+class GameRoutes[F[_]] (wsb: WebSocketBuilder2[IO])
+                       (implicit F: Async[IO])
 extends  Http4sDsl[F] with CirceJsonSupport {
 
-def routes(gameRepository: GameRepository.Service): HttpRoutes[F] = {
+def routes(gameRepository: GameRepository.Service): HttpRoutes[IO] = {
 
-  HttpRoutes.of[F] {
+  HttpRoutes.of[IO] {
     case GET -> Root / "play" =>
-      val getGameResults: Pipe[F, WebSocketFrame, WebSocketFrame] =
+      val getGameResults: Pipe[IO, WebSocketFrame, WebSocketFrame] =
         _.collect {
           case Text(msg, _) => {
             GameRequest.processInput(msg) match {
@@ -35,25 +35,16 @@ def routes(gameRepository: GameRepository.Service): HttpRoutes[F] = {
         }
 
       Queue
-        .unbounded[F, Option[WebSocketFrame]]
+        .unbounded[IO, Option[WebSocketFrame]]
         .flatMap { q =>
-          val d: Stream[F, WebSocketFrame] = Stream.fromQueueNoneTerminated(q).through(getGameResults)
-          val e: Pipe[F, WebSocketFrame, Unit] = _.enqueueNoneTerminated(q)
+          val d: Stream[IO, WebSocketFrame] = Stream.fromQueueNoneTerminated(q).through(getGameResults)
+          val e: Pipe[IO, WebSocketFrame, Unit] = _.enqueueNoneTerminated(q)
           wsb.build(d, e)
         }
   }
 }
-
-//  def processInput(text: String, gameRepository: GameRepository.Service): ZIO[Any, io.Serializable, GameResults] = {
-//    val result = for {
-//      request <- ZIO.fromEither(GameRequest.processInput(text))
-//      result <-  gameRepository.runGame(request)
-//    } yield result
-//     result
-//  }
-
   def processGame(gameRequest: GameRequest, gameRepository: GameRepository.Service): Text = {
-    Text(GameResults.apply(gameRepository.runGame(gameRequest)).asJson.noSpaces)
+   Text(GameResults.apply(gameRepository.runGame(gameRequest)).asJson.noSpaces)
   }
 
 }

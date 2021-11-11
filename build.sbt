@@ -16,6 +16,8 @@ val Versions = new {
   val ScalaTest = "3.2.7"
   val ScalaLogging = "3.9.3"
   val http4sVersion = "0.23.6"
+  val pureConfig = "0.17.0"
+  val scalaLogging = "3.9.4"
 }
 lazy val IntegrationTests = config("test-int") extend Test
 
@@ -75,6 +77,8 @@ lazy val `game-api` = project
       "org.http4s" %% "http4s-dsl" % Versions.http4sVersion,
       "org.http4s" %% "http4s-blaze-server" % Versions.http4sVersion,
       "org.http4s" %% "http4s-blaze-client" % Versions.http4sVersion,
+      "com.github.pureconfig" %% "pureconfig" % Versions.pureConfig,
+      "com.typesafe.scala-logging" %% "scala-logging" % Versions.ScalaLogging
     ),
 //    inConfig(IntegrationTests)(
 //      Defaults.testTasks ++

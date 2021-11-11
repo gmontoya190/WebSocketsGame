@@ -2,6 +2,7 @@ package repository
 
 import error.DomainError
 import model.{GameRequest, GameResults, PlayerResult, Result}
+import service.Random
 import zio.{Has, IO, ZIO}
 import zio._
 

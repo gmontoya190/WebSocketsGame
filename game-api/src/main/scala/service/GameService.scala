@@ -1,22 +1,29 @@
 package service
 
+import config.GameConfig
 import model.{ComputerPlayer, GameRequest, HumanPlayer, Player, PlayerResult, Result}
 import repository.GameRepository
-class GameService extends GameRepository.Service {
+class GameService(gameContext: GameConfig, random: Random) extends GameRepository.Service {
 
   override def runGame(gameRequest: GameRequest): List[Result] = {
-    val results = generateScoreForPlayers(createNumberPlayers(gameRequest.players), computerPlayer)
+    val totalPlayers = gameRequest.players
+    val numberHumanPlayers = gameRequest.players - gameContext.numberComputePlayers
+
+    val humanPlayers = createNumberPlayers(numberHumanPlayers)
+    val computerPlayers = createComputerPlayer(numberHumanPlayers, totalPlayers)
+    val results = generateScoreForPlayers(humanPlayers, computerPlayers)
     results
   }
 
-  private def createNumberPlayers(number: Long): List[HumanPlayer] = {
-    /// N = 10
-    val humanPlayers: List[HumanPlayer] = List.range(1, number).map(_ => new HumanPlayer(number.toString, (new util.Random).nextInt(999999).toString))
+  private def createNumberPlayers(numberPlayers: Int): List[HumanPlayer] = {
+    val humanPlayers: List[HumanPlayer] = List.range(1, numberPlayers +1)
+      .map(index => new HumanPlayer(index.toString,  (new util.Random).nextInt(999999).toString))
     humanPlayers
   }
 
-  private def computerPlayer: List[ComputerPlayer] = {
-    val computerPlayer = List(new ComputerPlayer("1", (new util.Random).nextInt(999999).toString))
+  private def createComputerPlayer(humanPlayers: Int, totalPlayers: Int): List[ComputerPlayer] = {
+    val computerPlayer = List.range(humanPlayers +1, totalPlayers +1)
+      .map(index => new ComputerPlayer(index.toString, (new util.Random).nextInt(999999).toString))
     computerPlayer
   }
   private def generateScoreForPlayers(humanPlayers: List[HumanPlayer], computerPlayer: List[ComputerPlayer]):  List[Result] = {
