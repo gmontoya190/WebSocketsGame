@@ -53,7 +53,7 @@ def routes(gameRepository: GameRepository.Service): HttpRoutes[IO] = {
     Text(InvalidMessageType("Unknown message format").asJson.noSpaces)
   }
   def processPing(pingRequest: Ping, gameRepository: GameRepository.Service): Text = {
-    Text(Pong(pingRequest.id, pingRequest.timeStamp, gameRepository.processPing(pingRequest)).asJson.noSpaces)
+    Text(Pong(pingRequest.id, pingRequest.timestamp, gameRepository.processPing(pingRequest)).asJson.noSpaces)
   }
 
 }

@@ -14,12 +14,8 @@ case class GameRequest(players: Int) extends MessageType {
 case class InvalidMessageType(message: String) extends MessageType {
   override val message_type = "invalid.message"
 }
-case class Ping(id: BigInt, timeStamp: Long) extends MessageType {
+case class Ping(id: BigInt, timestamp: Long) extends MessageType {
   override val message_type = "request.ping"
-}
-
-case class Pong(requestId: BigInt, request_at: Long, timeStamp: Long) extends MessageType {
-  override val message_type = "response.pong"
 }
 
 object MessageType {
@@ -45,7 +41,3 @@ object InvalidMessageType {
   implicit val invalidMessageTypeCodec: Encoder[InvalidMessageType] = deriveEncoder[InvalidMessageType]
 }
 
-object Pong {
-  import io.circe._, io.circe.generic.semiauto._
-  implicit val invalidMessageTypeCodec: Encoder[Pong] = deriveEncoder[Pong]
-}
