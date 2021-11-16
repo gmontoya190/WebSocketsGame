@@ -6,13 +6,7 @@ scalaVersion := "2.13.5"
 
 val Versions = new {
   val Circe = "0.14.1"
-  val AkkaHttp = "10.2.4"
-  val Akka = "2.6.14"
   val Scala = "2.13.5"
-  val Zio = "1.0.12"
-  val Slf4Zio = "1.0.0"
-  val ZioInteropLog = "1.0.0"
-  val AkkaHttpCirce = "1.31.0"
   val ScalaTest = "3.2.7"
   val ScalaLogging = "3.9.3"
   val http4sVersion = "0.23.6"
