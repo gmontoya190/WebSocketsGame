@@ -18,41 +18,19 @@ val Versions = new {
   val http4sVersion = "0.23.6"
   val pureConfig = "0.17.0"
   val scalaLogging = "3.9.4"
+  val mockitoScalaTest = "1.16.46"
 }
-lazy val IntegrationTests = config("test-int") extend Test
-
-val akkaDependencies = Seq(
-  "com.typesafe.akka" %% "akka-http-caching" % Versions.AkkaHttp,
-  "com.typesafe.akka" %% "akka-http" % Versions.AkkaHttp,
-  "com.typesafe.akka" %% "akka-http-testkit" % Versions.AkkaHttp % Test,
-  "com.typesafe.akka" %% "akka-stream" % Versions.Akka,
-  "com.typesafe.akka" %% "akka-slf4j" % Versions.Akka,
-  "com.typesafe.akka" %% "akka-testkit" % Versions.Akka % Test,
-  // circe support for akka http
-  "de.heikoseeberger" %% "akka-http-circe" % Versions.AkkaHttpCirce
-)
-
 lazy val `domain` = project
   .settings(
     name := "domain",
     organization := "lucklygames.domain",
     version := "0.0.1-SNAPSHOT",
-    libraryDependencies ++= akkaDependencies ++ Seq(
-      //ZIO logging
-      "dev.zio" %% "zio" % Versions.Zio,
-      "dev.zio" %% "zio-test" % Versions.Zio % Test,
-      "com.github.mlangc" %% "slf4zio" % Versions.Slf4Zio,
-      "com.github.mlangc" %% "zio-interop-log4j2" % Versions.ZioInteropLog,
-      "org.scalatest" %% "scalatest" % Versions.ScalaTest,
+    libraryDependencies ++= Seq(
       "io.circe" %% "circe-core" % Versions.Circe,
       "io.circe" %% "circe-generic" % Versions.Circe,
       "io.circe" %% "circe-generic-extras" % Versions.Circe,
       "io.circe" %% "circe-parser" % Versions.Circe,
     ),
-//    inConfig(IntegrationTests)(
-//      Defaults.testTasks ++
-//        Seq(forkOptions := Defaults.forkOptionsTask.value)
-//    )
   )
 
 lazy val `game-api` = project
@@ -61,15 +39,8 @@ lazy val `game-api` = project
     name := "game-api",
     organization := "lucklygames.game.api",
     version := "0.0.1-SNAPSHOT",
-    libraryDependencies ++= akkaDependencies ++ Seq(
-      //ZIO logging
-      "dev.zio" %% "zio" % Versions.Zio,
-      "dev.zio" %% "zio-test" % Versions.Zio % Test,
-      "dev.zio"  %% "zio-interop-cats"  % "3.1.1.0",
-      "com.github.mlangc" %% "slf4zio" % Versions.Slf4Zio,
-      "com.github.mlangc" %% "zio-interop-log4j2" % Versions.ZioInteropLog,
-      "org.scalatest" %% "scalatest" % Versions.ScalaTest,
-      "com.typesafe.scala-logging" %% "scala-logging" % Versions.ScalaLogging,
+    libraryDependencies ++= Seq(
+      "org.scalatest" %% "scalatest" % Versions.ScalaTest % Test,
       "io.circe" %% "circe-core" % Versions.Circe,
       "io.circe" %% "circe-generic" % Versions.Circe,
       "io.circe" %% "circe-generic-extras" % Versions.Circe,
@@ -78,10 +49,8 @@ lazy val `game-api` = project
       "org.http4s" %% "http4s-blaze-server" % Versions.http4sVersion,
       "org.http4s" %% "http4s-blaze-client" % Versions.http4sVersion,
       "com.github.pureconfig" %% "pureconfig" % Versions.pureConfig,
-      "com.typesafe.scala-logging" %% "scala-logging" % Versions.ScalaLogging
-    ),
-//    inConfig(IntegrationTests)(
-//      Defaults.testTasks ++
-//        Seq(forkOptions := Defaults.forkOptionsTask.value)
-//    )
+      "com.typesafe.scala-logging" %% "scala-logging" % Versions.ScalaLogging,
+      "org.mockito" % "mockito-scala-scalatest_2.12" % Versions.mockitoScalaTest % Test,
+
+    )
   )

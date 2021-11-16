@@ -18,7 +18,7 @@ class GameTestSpec extends AnyFlatSpec with MockitoSugar with Matchers {
       .andThen(546006)
       .andThen(576890)
 
-    val gameRequest = GameRequest("game", 3)
+    val gameRequest = GameRequest(3)
     val results = gameRepo.runGame(gameRequest)
     val expectedResults = List (Result (1, "1", 999999, 900000), Result (2, "2", 546006, 69), Result (3, "3", 576890, 35))
 
@@ -33,7 +33,7 @@ class GameTestSpec extends AnyFlatSpec with MockitoSugar with Matchers {
       .andThen(576890)
       .andThen(999999)
 
-    val gameRequest = GameRequest("game", 4)
+    val gameRequest = GameRequest(4)
     val results = gameRepo.runGame(gameRequest)
     val expectedResults = List (Result (1, "4", 999999, 900000), Result (2, "1", 111111, 100000),
       Result (3, "2", 546006, 69), Result (4, "3", 576890, 35))
@@ -44,13 +44,13 @@ class GameTestSpec extends AnyFlatSpec with MockitoSugar with Matchers {
 
   "Game" should "return values should return empty list when no players" in {
 
-    val gameRequest = GameRequest("game", 0)
+    val gameRequest = GameRequest(0)
     val results = gameRepo.runGame(gameRequest)
     results.size should equal (0)
   }
 
   "Game" should "return values should return empty list when number players in negative values" in {
-    val gameRequest = GameRequest("game", -1)
+    val gameRequest = GameRequest(-1)
     val results = gameRepo.runGame(gameRequest)
     results.size should equal (0)
   }

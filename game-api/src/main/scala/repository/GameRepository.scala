@@ -1,17 +1,13 @@
 package repository
 
-import error.DomainError
-import model.{GameRequest, GameResults, PlayerResult, Result}
-import service.Random
-import zio.{Has, IO, ZIO}
-import zio._
+
+import model.{GameRequest, Ping, Result}
 
 object GameRepository {
 
-  type GameRepository = Has[GameRepository.Service]
-
   trait Service {
     def runGame(gameRequest: GameRequest): List[Result]
+    def processPing(pingRequest: Ping): Long
   }
 
 }
